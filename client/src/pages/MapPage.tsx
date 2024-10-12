@@ -1,36 +1,18 @@
-import {Map, View} from 'ol'
-import {useEffect} from "react";
-import TileLayer from "ol/layer/Tile";
-import {OSM} from "ol/source";
+import {useEffect, useState} from "react";
 import 'ol/ol.css';
+import {getMap, getView} from "../lib/map/base.ts";
 
-const TEHRAN_CENTER_POINT = [5720067.9030910395, 4252557.027257666];
+const MAP_NODE_ID = 'main-map';
 
 const MapPage = () => {
+    const [map, setMap] = useState<Map<any, any>>(null)
+
     useEffect(() => {
-        const OSMLayer = new TileLayer({
-            preload: Infinity,
-            source: new OSM(),
-        })
+        const currentMap = getMap(MAP_NODE_ID, getView())
+        setMap(currentMap as Map<any, any>)
+    }, []);
 
-        const map = new Map({
-            target: 'main-map',
-            layers: [OSMLayer],
-            view: new View({
-                center: TEHRAN_CENTER_POINT,
-                zoom: 12,
-                enableRotation: false,
-            }),
-        });
-
-        map.on("click", (e) => {
-            console.log(e.map.getView().getCenter(), e.map.getView().getZoom())
-        })
-
-        return () => map.setTarget('main-map');
-    }, [])
-
-    return <div id="main-map" style={{width: "100%", height: "100vh"}}></div>
+    return <div id={MAP_NODE_ID} style={{width: "100%", height: "100vh"}}></div>
 }
 
 export default MapPage;
