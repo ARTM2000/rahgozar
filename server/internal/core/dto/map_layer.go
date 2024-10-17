@@ -12,22 +12,27 @@ type GeoJSONGeometry[T any] struct {
 	Coordinates T      `json:"coordinates"`
 }
 
-type geoJSON[T any] struct {
+type GeoJSONFeature[T any] struct {
 	Type       string                 `json:"type"`
 	Geometry   GeoJSONGeometry[T]     `json:"geometry"`
 	Properties map[string]interface{} `json:"properties"`
 }
 
 type GeoJSONPointFeature struct {
-	geoJSON[[]float64]
+	GeoJSONFeature[[]string]
 }
 
 type GeoJSONLineStringFeature struct {
-	geoJSON[[][]float64]
+	GeoJSONFeature[[][]string]
+}
+
+type GeoJSON[T any] struct {
+	Type     string `json:"type"`
+	Features []T    `json:"features"`
 }
 
 type MapLayerFullInfo struct {
 	MapLayerCompactInfo
-	Points []GeoJSONPointFeature      `json:"points"`
-	Lines  []GeoJSONLineStringFeature `json:"lines"`
+	Points []GeoJSON[GeoJSONPointFeature]      `json:"points"`
+	Lines  []GeoJSON[GeoJSONLineStringFeature] `json:"lines"`
 }
