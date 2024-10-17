@@ -76,6 +76,7 @@ func (h *httpServer) Start() {
 		},
 	}))
 	app.Use(compress.New(compress.Config{Level: compress.LevelBestCompression}))
+
 	app.Hooks().OnListen(func(ld fiber.ListenData) error {
 		if fiber.IsChild() {
 			return nil
