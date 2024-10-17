@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/compress"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -74,7 +75,7 @@ func (h *httpServer) Start() {
 			return false
 		},
 	}))
-
+	app.Use(compress.New(compress.Config{Level: compress.LevelBestCompression}))
 	app.Hooks().OnListen(func(ld fiber.ListenData) error {
 		if fiber.IsChild() {
 			return nil

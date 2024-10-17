@@ -29,7 +29,7 @@ func (mls *mapLayersService) GetActiveMapLayerByName(layerName string) (dto.MapL
 	return dto.MapLayerFullInfo{
 		MapLayerCompactInfo: dto.MapLayerCompactInfo{ID: 1, Name: "subway", Title: "مترو", Image: ""},
 		Points:              *points,
-		Lines:               nil,
+		Lines:               []dto.GeoJSON[dto.GeoJSONLineStringFeature]{},
 	}, nil
 }
 

@@ -39,6 +39,8 @@ func (mlc *mapLayerController) getLayerData(ctx *fiber.Ctx) error {
 		return &fiber.Error{Message: "bad request", Code: fiber.StatusBadRequest}
 	}
 
+	// todo: validate `layerName`
+
 	layerData, _ := mlc.mapLayersService.GetActiveMapLayerByName(queries.LayerName)
 
 	return ctx.Status(fiber.StatusOK).JSON(FormatResponse(ctx, ResponseData{
