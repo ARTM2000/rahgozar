@@ -1,18 +1,28 @@
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import 'ol/ol.css';
-import {getMap, getView} from "../lib/map/base.ts";
+import {MapMenu} from "../components/MapMenu.tsx";
+import MapManager from "../lib/map.ts";
+import {Map} from "ol";
 
 const MAP_NODE_ID = 'main-map';
 
 const MapPage = () => {
-    const [map, setMap] = useState<Map<any, any>>(null)
+    const mapRefTarget = useRef<HTMLDivElement>(null as HTMLDivElement)
+
+    const [map, setMap] = useState<Map>(null)
 
     useEffect(() => {
-        const currentMap = getMap(MAP_NODE_ID, getView())
-        setMap(currentMap as Map<any, any>)
+        const currentMap = new MapManager(
+            mapRefTarget.current, MapManager.getDefaultView()
+        ).getMap()
+        setMap(currentMap)
+        return () => currentMap.setTarget(undefined)
     }, []);
 
-    return <div id={MAP_NODE_ID} style={{width: "100%", height: "100vh"}}></div>
+    return <>
+        <MapMenu/>
+        <div ref={mapRefTarget} style={{position: "absolute", top: 0, left: 0, width: "100vw", height: "100vh"}}></div>
+    </>
 }
 
 export default MapPage;

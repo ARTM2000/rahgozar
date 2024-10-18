@@ -9,7 +9,7 @@ function App() {
     <>
       <Suspense fallback={<Loading/>}>
         <Routes>
-            <Route path="/map" element={<MapPage/>} />
+            <Route path="/" element={<MapPage/>} />
         </Routes>
       </Suspense>
     </>
