@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/compress"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/helmet"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/gofiber/fiber/v2/middleware/recover"
@@ -65,6 +66,12 @@ func (h *httpServer) Start() {
 	app.Use(recover.New(recover.Config{EnableStackTrace: true}))
 	app.Use(logger.New())
 	app.Use(helmet.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "http://localhost:5173",
+		AllowMethods:     "GET,POST",
+		AllowHeaders:     "X-Request-ID,Authorization",
+		AllowCredentials: true,
+	}))
 	app.Use(requestid.New(requestid.Config{
 		Next: func(c *fiber.Ctx) bool {
 			trackId := c.Get(fiber.HeaderXRequestID)
